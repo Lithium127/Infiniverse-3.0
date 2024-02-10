@@ -86,7 +86,10 @@ class StaticObject(object):
 class Universe(StaticObject):
     GALAXY_RANGE = [5,9]
     
-    NAME_PREFIXS = ["Bacon"]    
+    NAME_PREFIXS = ["Bacon"]
+    
+    D_SPACE_TYPES = ["Euclidian", "Mixed", "Hyperbolic", "Spherical", "Cubic", "Empty"]
+    D_AGE_RANGE = [10,999999]
     
     def _generate(self) -> None:
         for i in randiter(self.GALAXY_RANGE):
@@ -94,13 +97,19 @@ class Universe(StaticObject):
     
     def _generate_name(self) -> str | None:
         return f"{choice(self.NAME_PREFIXS)}verse"
+    
+    def _dynamic_display(self) -> dict[str, str] | None:
+        return {
+            "Space": choice(self.D_SPACE_TYPES),
+            "Est Age": f"10^{randrange(self.D_AGE_RANGE)} M"
+        }
 
 
 
 class Galaxy(StaticObject):
     SYSTEM_RANGE = [7,25]
     
-    GIVEN_NAME_PERCENT = 30
+    GIVEN_NAME_PERCENT = 15
     
     NAME_PREFIXS = ["X","JW","HB","A","B"]
     NAME_NUMBER_RANGE = [1,999]
@@ -109,7 +118,9 @@ class Galaxy(StaticObject):
         "Andromeda",
         "Sombrero",
         "Samsung",
-        "Disk"
+        "Disk",
+        "Crab",
+        "Predator"
     ]
     
     def _generate(self) -> None:
@@ -120,6 +131,9 @@ class Galaxy(StaticObject):
         if randpercent(self.GIVEN_NAME_PERCENT):
             return f"{choice(self.GIVEN_NAME_PREFIXES)} Galaxy"
         return f"{choice(self.NAME_PREFIXS)}-{randrange(self.NAME_NUMBER_RANGE)}"
+
+class BlackHole(StaticObject):
+    pass
 
 class StarSystem(StaticObject):
     

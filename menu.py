@@ -23,10 +23,12 @@ class StaticAssetView(w.Frame):
             title = "Infiniverse 3.0"
         )
         
+        self.set_theme("monochrome")
+        
         self._current_asset = start_asset
         
         # Object and Content view
-        self._layout_objects = w.Layout([39, 2, 59], fill_frame=True)
+        self._layout_objects = w.Layout([1,39, 2, 59], fill_frame=True)
         self.add_layout(self._layout_objects)
         
         self._listbox_content = w.ListBox(
@@ -44,7 +46,7 @@ class StaticAssetView(w.Frame):
         self._layout_objects.add_widget(self._asset_name, 0)
         self._layout_objects.add_widget(self._asset_class, 0)
         self._layout_objects.add_widget(self._asset_content_len, 0)
-        self._layout_objects.add_widget(w.Divider())
+        self._layout_objects.add_widget(w.Divider(), 0)
         self._layout_objects.add_widget(self._asset_description, 0)
         
         self._layout_objects.add_widget(w.VerticalDivider(), 1)
@@ -80,14 +82,16 @@ class StaticAssetView(w.Frame):
         self._asset_class._value = self._current_asset.__class__.__name__
         self._asset_content_len._value = str(len(self._current_asset._contents))
         
-        self._asset_description._value = [""]
+        self._asset_description._value = [("", None)]
         
         lines = self._current_asset._dynamic_display()
         if lines is None:
             return
         data = []
-        for line, value in lines:
-            data.append(f"{line} : {value}")
+        for label in lines.keys():
+            data.append((f"{label} : {lines[label]}", None))
+
+        self._asset_description._value = data
     
     def _back(self) -> None:
         if self._current_asset._parent is not None:
